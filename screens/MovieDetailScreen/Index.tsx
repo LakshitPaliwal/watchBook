@@ -2,18 +2,17 @@ import React, { useState, useEffect } from 'react'
 import { Image, ScrollView, FlatList, Text, Pressable, StyleSheet, View, TouchableOpacity } from 'react-native';
 import movie from '../../assets/movie';
 import { MaterialIcons, Entypo, AntDesign, Ionicons, Feather, FontAwesome } from '@expo/vector-icons';
-import EpisodeList from '../../components/EpisodeItem/index';
 import { Picker } from '@react-native-picker/picker';
 import VideoPlayer from '../../components/VideoPlayer';
+import EpisodeItem from '../../components/EpisodeItem/index';
 
 const firstSeason = movie.seasons.items[0];
 const firstEpisode = firstSeason.episodes.items[0];
 
 const MovieDetailScreen = () => {
-    // console.log(firstEpisode);
+    // console.log(firstEpisode);   
+    const [currentSeason, setCurrentSeason] = useState(firstSeason);
 
-    const [currentSeason, setCurrentSeason] = useState(firstEpisode);
-    // const [currentEpisode, setCurrentEpisode] = useState(firstEpisode.episodes.items[0]);
 
 
     const seasonNames = movie.seasons.items.map(season => season.name);
@@ -21,89 +20,84 @@ const MovieDetailScreen = () => {
     return (
         <View style={styles.container}>
             <Image style={styles.image} source={{ uri: firstEpisode.poster }} />
-            {/* <VideoPlayer episode={currentEpisode} /> */}
+
+
             <FlatList
-                //  data={firstSeason.episodes.items}
                 data={currentSeason.episodes.items}
-                renderItem={({ item }) => <EpisodeList episode={item} />}
+                renderItem={({ item }) => <EpisodeItem episode={item} />}
                 style={{ marginBottom: 'auto' }}
                 ListHeaderComponent={(
                     <View style={{ padding: 12 }}>
-                        {/* <EpisodeList episode={firstEpisode} /> */}
+                        <Text style={styles.title}>{movie.title}</Text>
+                        <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.match}>98% match</Text>
+                            <Text style={styles.year}>{movie.year}</Text>
+                            <View style={styles.ageContainer}>
+                                <Text style={styles.age}>+12</Text>
+                            </View>
+                            <Text style={styles.year}>{movie.numberOfSeasons} Seasons</Text>
+                            <MaterialIcons name="hd" size={24} color="black" />
+                        </View>
 
-                        <ScrollView >
-                            <Text style={styles.title}>{movie.title}</Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={styles.match}>98% match</Text>
-                                <Text style={styles.year}>{movie.year}</Text>
-                                <View style={styles.ageContainer}>
-                                    <Text style={styles.age}>+12</Text>
-                                </View>
-                                <Text style={styles.year}>{movie.numberOfSeasons} Seasons</Text>
-                                <MaterialIcons name="hd" size={24} color="black" />
+                        {/* Play Button */}
+                        <TouchableOpacity onPress={() => { console.warn('play clicked') }} style={styles.playButton}>
+                            <Text style={styles.playButtonText}>
+                                <Entypo name="controller-play" size={16} color="black" />
+                                Play
+                            </Text>
+                        </TouchableOpacity>
+
+                        {/* Download Button */}
+                        <TouchableOpacity onPress={() => { console.warn('Download clicked') }} style={styles.downloadButton}>
+                            <Text style={styles.downloadButtonText}>
+                                <AntDesign name="download" size={16} color="white" />
+                                Download
+                            </Text>
+                        </TouchableOpacity>
+
+                        <Text style={{ margin: 'auto' }}>{movie.plot}</Text>
+                        <Text style={styles.year}>Cast: {movie.cast}</Text>
+                        <Text style={styles.year}>Creator: {movie.creator}</Text>
+
+                        {/* Row with icon buttons */}
+                        <View style={{ flexDirection: 'row', marginTop: 20, }}>
+                            <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
+                                <AntDesign name="plus" size={24} color={'grey'} />
+                                <Text style={{ color: 'darkgrey', marginTop: 5 }}>My List</Text>
                             </View>
 
-                            {/* Play Button */}
-                            <TouchableOpacity onPress={() => { console.warn('play clicked') }} style={styles.playButton}>
-                                <Text style={styles.playButtonText}>
-                                    <Entypo name="controller-play" size={16} color="black" />
-                                    Play
-                                </Text>
-                            </TouchableOpacity>
-
-                            {/* Download Button */}
-                            <TouchableOpacity onPress={() => { console.warn('Download clicked') }} style={styles.downloadButton}>
-                                <Text style={styles.downloadButtonText}>
-                                    <AntDesign name="download" size={16} color="white" />
-                                    Download
-                                </Text>
-                            </TouchableOpacity>
-
-                            <Text style={{ marginVertical: 10 }}>{movie.plot}</Text>
-                            <Text style={styles.year}>Cast: {movie.cast}</Text>
-                            <Text style={styles.year}>Creator: {movie.creator}</Text>
-
-                            {/* Row with icon buttons */}
-                            <View style={{ flexDirection: 'row', marginTop: 20, }}>
-                                <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
-                                    <AntDesign name="plus" size={24} color={'grey'} />
-                                    <Text style={{ color: 'darkgrey', marginTop: 5 }}>My List</Text>
-                                </View>
-
-                                <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
-                                    <Feather name="thumbs-up" size={24} color="grey" />
-                                    <Text style={{ color: 'darkgrey', marginTop: 5 }}>Rate</Text>
-                                </View>
-
-                                <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
-                                    <FontAwesome name="send-o" size={24} color="grey" />
-                                    <Text style={{ color: 'darkgrey', marginTop: 5 }}>Share</Text>
-                                </View>
+                            <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
+                                <Feather name="thumbs-up" size={24} color="grey" />
+                                <Text style={{ color: 'darkgrey', marginTop: 5 }}>Rate</Text>
                             </View>
-                            <View style={{ backgroundColor: 'white' }}>
 
+                            <View style={{ alignItems: 'center', marginHorizontal: 20 }}>
+                                <FontAwesome name="send-o" size={24} color="grey" />
+                                <Text style={{ color: 'darkgrey', marginTop: 5 }}>Share</Text>
                             </View>
-                        </ScrollView>
+                        </View>
+                        <View style={{ backgroundColor: 'white' }}>
+
+                        </View>
 
                         <Picker
                             selectedValue={currentSeason.name}
                             onValueChange={(itemValue, itemIndex) => {
-                                setCurrentSeason(seasons[itemIndex])
-
-                                // setCurrentSeason(movie.seasons.items[itemIndex])
+                                setCurrentSeason(movie.seasons.items[itemIndex])
                             }}
-                            style={{ color: 'white', width: 130 }}
-                            itemStyle={{ backgroundColor: 'white' }}
+                            style={{ color: 'white',width:131 }}
                             dropdownIconColor={'white'}
                         >
                             {seasonNames.map(seasonName => (
                                 <Picker.Item label={seasonName} value={seasonName} key={seasonName} />
                             ))}
+
                         </Picker>
                     </View>
                 )}
             />
         </View>
+
     );
 }
 
@@ -173,3 +167,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     }
 });
+
+
+

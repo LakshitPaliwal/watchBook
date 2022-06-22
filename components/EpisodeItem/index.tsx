@@ -1,23 +1,33 @@
 import React from 'react';
-import {TouchableOpacity,StyleSheet,Image ,Text, View } from 'react-native';
+import { TouchableOpacity, Pressable, StyleSheet, Image, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { Episode } from '../../types';
 
-interface EpisodeListProps {
-    episode: {
-        id: String,
-        title: String,
-        poster: String,
-        duration: String,
-        plot: String,
-        video: String
-    }
+
+interface EpisodeItemProps {
+    episode: Episode;
+
 }
 
-const EpisodeList = (props:EpisodeListProps)=> {
+const EpisodeItem = (props: EpisodeItemProps) => {
     const { episode } = props;
 
     return (
-        <TouchableOpacity style={{ margin: 10 }} onPress={() => onPress(episode)}>
+        // <Pressable style={{ margin: 10 }} onPress={() => onPress(episode)}>
+        //     <View style={styles.row}>
+        //         <Image style={styles.image} source={{ uri: episode.poster }} />
+
+        //         <View style={styles.titleContainer}>
+        //             <Text style={styles.title}>{episode.title}</Text>
+        //             <Text style={styles.duration}>{episode.duration}</Text>
+        //         </View>
+
+        //         <AntDesign name="download" size={24} color={'white'} />
+        //     </View>
+
+        //     <Text style={styles.plot}>{episode.plot}</Text>
+        // </Pressable>
+        <View style={{ marginVertical: 10 }}>
             <View style={styles.row}>
                 <Image style={styles.image} source={{ uri: episode.poster }} />
 
@@ -30,23 +40,23 @@ const EpisodeList = (props:EpisodeListProps)=> {
             </View>
 
             <Text style={styles.plot}>{episode.plot}</Text>
-        </TouchableOpacity>
-    );
-}
+        </View>
+    )
+};
 
-export default EpisodeList;
+export default EpisodeItem;
 
 
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between', 
+        justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: 5,
     },
     image: {
         height: 75,
-        aspectRatio: 16/9,
+        aspectRatio: 16 / 9,
         resizeMode: 'cover',
         borderRadius: 3,
     },
